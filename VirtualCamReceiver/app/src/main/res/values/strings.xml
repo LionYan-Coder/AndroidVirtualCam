@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name" translatable="false">安卓虚拟摄像受控端</string>
+    <string name="permission_lack_warn" translatable="false">无权限</string>
+    <string name="permission_description" translatable="false">访问本地目录的权限用于设定配置文件，如果拒绝，您需要手动设定配置文件。</string>
+    <string name="positive" translatable="false">确定</string>
+    <string name="negative" translatable="false">拒绝</string>
+</resources>
