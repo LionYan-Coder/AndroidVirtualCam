@@ -50,7 +50,6 @@ class MainHook: IXposedHookLoadPackage {
                         if (param!!.args[0] is Application) {
                             if (AppInstance.AppContext == null){
                                 AppInstance.AppContext = (param.args[0] as Application).applicationContext
-                                createClientId(AppInstance.AppContext!!)
                                 Log.d("sse", "AppInstance.AppContext : ${AppInstance.AppContext}")
                             }
                         }
@@ -74,9 +73,8 @@ class MainHook: IXposedHookLoadPackage {
 
             XposedHelpers.findAndHookMethod("android.hardware.Camera", lpparam.classLoader, "startPreview", object : XC_MethodHook() {
                 override fun beforeHookedMethod(param: MethodHookParam) {
+                    log("开始预览 ${AppInstance.ClientId}")
                     SseService.initSse()
-                    Log.d("sse","开始预览")
-                    log("开始预览")
                 }
 //                override fun afterHookedMethod(param: MethodHookParam) {
 //                    val camera = param.thisObject as Camera
@@ -86,15 +84,12 @@ class MainHook: IXposedHookLoadPackage {
 
             XposedHelpers.findAndHookMethod("android.hardware.Camera",lpparam.classLoader,"release",object : XC_MethodHook(){
                 override fun beforeHookedMethod(param: MethodHookParam) {
-                    log("释放相机")
-                    Log.d("sse","释放相机")
 //                    FileUtils.delToFile(AppInstance.AppContext!!,IS_PAUSED_FILE)
 //                    FileUtils.delToFile(AppInstance.AppContext!!, LAST_FRAME_FILE)
 //                    FileUtils.delToFile(AppInstance.AppContext!!, CURRENT_FRAME_FILE)
 //                    Log.d("sse","已删除文件")
 //                    origin_preview_camera?.release()
-                    origin_preview_camera = null
-                    SseService.closeSse()
+
 //                    mSurface?.release()
 //                    videoEncoder?.release()
                 }
@@ -157,7 +152,9 @@ class MainHook: IXposedHookLoadPackage {
             XposedHelpers.findAndHookMethod(cls,lpparam.classLoader,"onCreate",
                 Bundle::class.java, object: XC_MethodHook(){
                 override fun afterHookedMethod(param: MethodHookParam?) {
-                    Toast.makeText(param?.thisObject as Activity, "模块加载成功！", Toast.LENGTH_SHORT).show()
+                    Log.d("sse","开始预览v1.0")
+                    log("开始预览v1.0")
+                    Toast.makeText(param?.thisObject as Activity, "模块加载成功v1.0！", Toast.LENGTH_SHORT).show()
                 }
             })
 
@@ -169,6 +166,10 @@ class MainHook: IXposedHookLoadPackage {
                     override fun afterHookedMethod(param: MethodHookParam?) {
                         // 在这里可以添加应用关闭时的逻辑
                         log("onDestroy")
+                        log("释放相机")
+                        Log.d("sse","释放相机")
+                        origin_preview_camera = null
+                        SseService.closeSse()
 //                        val clientId =  AppInstance.ClientId
 //                        FileUtils.delToFile(AppInstance.AppContext!!,IS_PAUSED_FILE)
 //                        SseService.closeSse()
@@ -217,21 +218,20 @@ class MainHook: IXposedHookLoadPackage {
         XposedBridge.log("VirtualCameraModule: $message")
     }
 
-    fun createClientId(context: Context){
-        try {
-            var clientId = FileUtils.readStringFromFile(context,CLIENT_FILE)
-            if (clientId == null){
-                clientId = Device().getUniqueDeviceId()
-                AppInstance.ClientId = clientId
-                FileUtils.writeStringToFile(context,CLIENT_FILE,clientId)
-            }else {
-                AppInstance.ClientId = clientId
-            }
-        } catch (e: Exception) {
-            Log.i("sse","VirtualCameraModule createClientId error ${e.message}")
-        }
-
-    }
-
+//    fun createClientId(context: Context){
+//        try {
+//            var clientId = FileUtils.readStringFromFile(context, CLIENT_FILE)
+//            if (clientId == null){
+//                clientId = Device().getUniqueDeviceId()
+//                AppInstance.ClientId = clientId
+//                FileUtils.writeStringToFile(context, CLIENT_FILE,clientId)
+//            }else {
+//                AppInstance.ClientId = clientId
+//            }
+//        } catch (e: Exception) {
+//            Log.i("sse","VirtualCameraModule createClientId error ${e.message}")
+//        }
+//
+//    }
 
 }

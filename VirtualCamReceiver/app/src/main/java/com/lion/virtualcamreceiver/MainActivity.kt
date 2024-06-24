@@ -1,7 +1,9 @@
 package com.lion.virtualcamreceiver
 
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -17,6 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.lion.virtualcamreceiver.ui.theme.VirtualCamReceiverTheme
 import com.lion.virtualcamreceiver.utils.AppInstance
+import com.lion.virtualcamreceiver.utils.CLIENT_FILE
+import com.lion.virtualcamreceiver.utils.Device
+import com.lion.virtualcamreceiver.utils.FileUtils
+import com.lion.virtualcamreceiver.utils.SseService
 
 
 class MainActivity : ComponentActivity() {
@@ -46,5 +52,6 @@ class MainActivity : ComponentActivity() {
     override fun onDestroy() {
         super.onDestroy()
     }
+
 
 }

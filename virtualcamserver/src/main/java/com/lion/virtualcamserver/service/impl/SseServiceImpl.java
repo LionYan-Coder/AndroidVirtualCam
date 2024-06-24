@@ -23,9 +23,11 @@ public class SseServiceImpl implements SseService {
     public SseEmitter getConn(String clientId) {
         final SseEmitter sseEmitter = SSE_CACHE.get(clientId);
         if (sseEmitter != null){
+            logger.info("连接成功，clientId = {}", clientId);
             return sseEmitter;
         }else {
             final SseEmitter emitter = new SseEmitter(5 * 60 * 60 * 1000L);
+
             // 注册超时回调，超时后触发
             emitter.onTimeout(() -> {
                 logger.warn("连接已超时，正准备关闭，clientId = {}", clientId);
@@ -45,6 +47,7 @@ public class SseServiceImpl implements SseService {
             });
 
             SSE_CACHE.put(clientId, emitter);
+            logger.info("连接成功，clientId = {}", clientId);
             try {
                 emitter.send(SseEmitter.event().data("heartbeat"));
             } catch (IOException e) {

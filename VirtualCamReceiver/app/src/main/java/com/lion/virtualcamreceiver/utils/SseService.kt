@@ -26,7 +26,6 @@ class SseService() {
             var clientId = AppInstance.ClientId
             var httpClient = OkHttpClient().newBuilder().connectTimeout(5 * 60 * 60 * 1000, TimeUnit.MILLISECONDS).build()
             Log.d("sse","config: $apiUrl, $clientId")
-//        XposedBridge.log("config: $apiUrl, $clientId")
             val request = Request.Builder()
                 .url("${apiUrl}/sse/connect/${clientId}")
                 .build()
@@ -60,6 +59,7 @@ class SseService() {
                             when(response.data?.cameraStatus){
                                 "DISABLE" -> {
                                     Log.d("sse","AppInstance.AppContext: ${AppInstance.AppContext}")
+
                                     origin_preview_camera?.stopPreview()
 //                                    FileUtils.writeBooleanToFile(AppInstance.AppContext!!,IS_PAUSED_FILE)
 //                                    val currentFrame = FileUtils.readFromFile(AppInstance.AppContext!!,CURRENT_FRAME_FILE)

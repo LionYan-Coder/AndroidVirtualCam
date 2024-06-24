@@ -24,6 +24,7 @@ android {
         }
 
         buildConfigField("String", "API_URL", "\"${project.findProperty("API_URL")}\"")
+        buildConfigField("String", "CLIENT_ID", "\"${project.findProperty("CLIENT_ID")}\"")
     }
 
     buildTypes {

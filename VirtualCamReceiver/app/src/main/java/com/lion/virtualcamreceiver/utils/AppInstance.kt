@@ -6,5 +6,5 @@ import com.lion.virtualcamreceiver.BuildConfig
 object AppInstance {
     const val API_URL: String =  BuildConfig.API_URL
     var AppContext: Context? = null
-    var ClientId: String? = null
+    var ClientId: String = BuildConfig.CLIENT_ID
 }
